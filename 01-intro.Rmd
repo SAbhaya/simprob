@@ -34,6 +34,21 @@ Lets see the result
 ```{r}
 result
 ```
+Histrogram of this restuls as precentage of each occurance
+
+```{r}
+library(lattice)
+histogram(result)
+
+```
+## Probability Density Function
+The Probability Dessity Fucntion is 
+
+```{r}
+densityplot(result)
+```
+
+
 
 
 
