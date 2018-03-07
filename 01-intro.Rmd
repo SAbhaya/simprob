@@ -1,0 +1,44 @@
+---
+title: "Simple Probability"
+output:
+  html_document:
+    df_print: paged
+---
+
+# Introduction
+
+This is to explain some very simple probability & statistics. Most of you already know these things. So this is for absolute beginers.
+
+# Basic probablity
+
+Lets assume simple coin. It has a two faces and if you flip the coin it will give  result either **HEAD** or **TAIL**
+
+So probablity of result HEAD is 0.5 or 1/2 and probablity of result TAIL is 0.5 or 1/2
+
+Lets assue we flip the coin 10 times. We can use R to simulate the results.
+
+1. we create the coin & assing 0 & 1 (for HEAD & TAIL)
+
+```{r}
+coin <- c(0,1)
+
+```
+2. flip the coin 10 times and store the results in **result** 
+
+```{r}
+result <- sample(coin,10, replace = TRUE)
+
+```
+Lets see the result
+
+```{r}
+result
+```
+
+
+
+
+
+
+
+
