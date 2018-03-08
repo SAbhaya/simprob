@@ -7,23 +7,26 @@ output:
 
 # Introduction
 
-This is to explain some very simple probability & statistics. Most of you already know these things. So this is for absolute beginers.
+This is to explain some very simple probability & statistics. Most of you already know these things. So this is for absolute beginners.
 
-# Basic probablity
+# Basic probability
 
 Lets assume simple coin. It has a two faces and if you flip the coin it will give  result either **HEAD** or **TAIL**
 
-So probablity of result HEAD is 0.5 or 1/2 and probablity of result TAIL is 0.5 or 1/2
+Given that all outcomes are equally likely, we can compute the probability of a TAIL using the formula:
+</br>
+$$ \text{Probabillity} = \frac{\text{Number of favourable outcome}}{\text{Number of possible eaqually like outcomes}} $$
+</br>
+So probability of result HEAD is 0.5 or 1/2 and probability of result TAIL is 0.5 or 1/2
+Lets assume we flip the coin 10 times. We can use R to simulate the results.
 
-Lets assue we flip the coin 10 times. We can use R to simulate the results.
-
-1. we create the coin & assing 0 & 1 (for HEAD & TAIL)
+1. we create the coin & assign 0 & 1 (for HEAD & TAIL)
 
 ```{r}
 coin <- c(0,1)
 
 ```
-2. flip the coin 10 times and store the results in **result** 
+2. flip the coin 10 times and store the results in **result**
 
 ```{r}
 result <- sample(coin,10, replace = TRUE)
@@ -34,26 +37,25 @@ Lets see the result
 ```{r}
 result
 ```
-Histrogram of this restuls as precentage of each occurance
+We can show as a table
+
+```{r}
+table(result)
+```
+
+
+Bar chart of this results
 
 ```{r}
 library(lattice)
-histogram(result)
+barchart(table(result), horizontal = FALSE)
 
 ```
+
 ## Probability Density Function
-The Probability Dessity Fucntion is 
+
+The Probability Density Function is
 
 ```{r}
 densityplot(result)
 ```
-
-
-
-
-
-
-
-
-
-
