@@ -11,19 +11,23 @@ This is to explain some very simple probability & statistics. Most of you alread
 
 # Basic probability
 
-Lets assume simple coin. It has a two faces and if you flip the coin it will give  result either **HEAD** or **TAIL**
+Lets assume simple coin. It has a two faces and if you flip the coin it will give result either **HEAD** or **TAIL**
 
 Given that all outcomes are equally likely, we can compute the probability of a TAIL using the formula:
 </br>
 $$ \text{Probabillity} = \frac{\text{Number of favourable outcome}}{\text{Number of possible eaqually like outcomes}} $$
 </br>
-So probability of result HEAD is 0.5 or 1/2 and probability of result TAIL is 0.5 or 1/2
-Lets assume we flip the coin 10 times. We can use R to simulate the results.
 
-1. we create the coin & assign 0 & 1 (for HEAD & TAIL)
+So probability of result HEAD is 0.5 or 1/2 and probability of result TAIL is 0.5 or 1/2
+
+Probability of an event (either HEAD or TAIL) $P(A) = \frac{1}{2}$ 
+
+Now flip the coin 10 times. We can use R to simulate the results.
+
+1. we create the coin & assign 1 & 0 (for HEAD & TAIL)
 
 ```{r}
-coin <- c(0,1)
+coin <- c(1,0)
 
 ```
 2. flip the coin 10 times and store the results in **result**
@@ -48,8 +52,46 @@ Bar chart of this results
 
 ```{r}
 library(lattice)
-barchart(table(result), horizontal = FALSE)
+barchart(table(result), horizontal = FALSE, xlab = c("TAIL", "HEAD"))
 
+```
+
+**What is the conclusion?**
+
+> seems number of HEAD or TAIL frequencies are not equal?
+
+Probability of HEAD $P(H)$
+
+Probability of TAIL $P(T)$
+
+In here why $P(H) = P(T) = \frac{1}{2}$ can not be observed.
+
+Because we need to increase the number of coin flips to see that.
+
+## Flip coin function
+
+To demonstrate that we can create **flipCoin** function
+```{r}
+flipCoin <- function(numFlips = 10){
+  coin <- c(1,0)
+  sample(coin, numFlips, replace = TRUE)
+
+}
+
+
+```
+
+Lets see the results by fliping coin 100 times
+
+```{r}
+barchart(table(flipCoin(100)), horizontal = FALSE, xlab = c("TAIL", "HEAD"))
+```
+
+May be 1000 times
+
+
+```{r}
+barchart(table(flipCoin(1000)), horizontal = FALSE, xlab = c("TAIL", "HEAD"))
 ```
 
 ## Probability Density Function
