@@ -1,11 +1,19 @@
-From:
 
-https://www.mathsisfun.com/data/probability.html
+## Tossing a coin
 
-We say that the probability of the coin landing H is ½
+The probababilty of perticuar event can be described as:
 
-And the probability of the coin landing T is ½
+> - [ ] add equation
 
+
+The probability of the coin landing H or HEAD is ½ [1]
+
+And the probability of the coin landing T or TAIL is ½
+
+
+
+
+-----
 Probability is Just a Guide
 Probability does not tell us exactly what will happen, it is just a guide
 
@@ -26,3 +34,5 @@ Between 0 and 1
 >   This is because 0 is impossible (sure that something will not happen).
 > * The probability of an event will not be more than 1. 
 >   This is because 1 is certain that something will happen.
+
+[1]: https://www.mathsisfun.com/data/probability.html
