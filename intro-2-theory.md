@@ -5,9 +5,7 @@ The probababilty of perticuar event can be described as:
 
 > - [ ] add equation
 
-
-<a href="https://www.codecogs.com/eqnedit.php?latex=\text{Probabillity}&space;=&space;\frac{\text{Number&space;of&space;favourable&space;outcome}}{\text{Number&space;of&space;possible&space;eaqually&space;like&space;outcomes}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\text{Probabillity}&space;=&space;\frac{\text{Number&space;of&space;favourable&space;outcome}}{\text{Number&space;of&space;possible&space;eaqually&space;like&space;outcomes}}" title="\text{Probabillity} = \frac{\text{Number of favourable outcome}}{\text{Number of possible eaqually like outcomes}}" /></a>
-
+![equation](https://latex.codecogs.com/gif.latex?%5Ctext%7BProbabillity%7D%20%3D%20%5Cfrac%7B%5Ctext%7BNumber%20of%20favourable%20outcome%7D%7D%7B%5Ctext%7BNumber%20of%20possible%20eaqually%20like%20outcomes%7D%7D)
 
 The probability of the coin landing H or HEAD is ½ [1]
 
