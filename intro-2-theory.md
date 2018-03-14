@@ -18,9 +18,15 @@ And the probability of the coin landing T or TAIL is ½
 Probability is Just a Guide
 Probability does not tell us exactly what will happen, it is just a guide
 
-Example: toss a coin 100 times, how many Heads will come up?
-Probability says that heads have a ½ chance, so we can expect 50 Heads.
-But when we actually try it we might get 48 heads, or 55 heads ... or anything really, but in most cases it will be a number near 50.
+Example: toss a coin 10 times, how many Heads will come up?
+According to the Probability of the coin landing Head is ½ chance, so we can expect 5 Heads.
+But when we actually try it we might get 3 heads, or  4 heads ... or anything really.
+
+Lets simulate this using some R script
+
+
+
+
 
 Probability is the chance that something will happen
 The probability of an event occurring is somewhere between impossible and certain.
