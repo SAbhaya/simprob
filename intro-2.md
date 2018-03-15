@@ -7,7 +7,7 @@ The probababilty of perticuar event can be described as:
 
 ![equation](https://latex.codecogs.com/gif.latex?%5Ctext%7BProbabillity%7D%20%3D%20%5Cfrac%7B%5Ctext%7BNumber%20of%20favourable%20outcome%7D%7D%7B%5Ctext%7BNumber%20of%20possible%20eaqually%20like%20outcomes%7D%7D)
 
-The probability of the coin landing H or HEAD is ½ [1]
+The probability of the coin landing H or HEAD is ½
 
 And the probability of the coin landing T or TAIL is ½
 
@@ -42,4 +42,3 @@ Between 0 and 1
 > * The probability of an event will not be more than 1. 
 >   This is because 1 is certain that something will happen.
 
-[1]: https://www.mathsisfun.com/data/probability.html
