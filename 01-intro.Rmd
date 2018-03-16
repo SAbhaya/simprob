@@ -11,18 +11,29 @@ This is to explain some very simple probability & statistics. Most of you alread
 
 # Basic probability
 
-Lets assume simple coin. It has a two faces and if you flip the coin it will give result either **HEAD** or **TAIL**
+The probababilty of perticuar event can be described as:
 
-Given that all outcomes are equally likely, we can compute the probability of a TAIL using the formula:
-</br>
 $$ \text{Probabillity} = \frac{\text{Number of favourable outcome}}{\text{Number of possible eaqually like outcomes}} $$
-</br>
 
-So probability of result HEAD is 0.5 or 1/2 and probability of result TAIL is 0.5 or 1/2
+Lets assume simple coin. It has a two faces and if you toss the coin it will give result either **HEAD** or **TAIL**
 
-Probability of an event (either HEAD or TAIL) $P(A) = \frac{1}{2}$ 
+The probability of the coin landing H or HEAD is $P(H)$
+And the probability of the coin landing T or TAIL is $P(T)$
 
-Now flip the coin 10 times. We can use R to simulate the results.
+Given that all outcomes are equally likely, we can compute the probability of a landing HEAD using the formula:
+
+$$P(H) = \frac{\text{Number of favourable outcome}}{\text{Number of possible eaqually like outcomes}} = \frac{1}{2} $$
+
+Similarly probability of landing TAIL is $\frac{1}{2}$.
+
+Probability is Just a Guide
+Probability does not tell us exactly what will happen, it is just a guide
+
+Example: toss a coin 10 times, how many Heads will come up?
+According to the Probability of the coin landing Head is ½ chance, so we can expect 5 Heads.
+But when we actually try it we might get 3 heads, or  4 heads ... or anything really.
+
+Lets simulate this using some R script
 
 1. we create the coin & assign 1 & 0 (for HEAD & TAIL)
 
@@ -30,7 +41,7 @@ Now flip the coin 10 times. We can use R to simulate the results.
 coin <- c(1,0)
 
 ```
-2. flip the coin 10 times and store the results in **result**
+2. toss the coin 10 times and store the results in **result**
 
 ```{r}
 result <- sample(coin,10, replace = TRUE)
