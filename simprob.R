@@ -8,7 +8,15 @@ library(ggplot2)
 #check the sample
 coin <- c(0,1)
 result <- sample(coin,10, replace = TRUE)
-result
+df <- data.frame(result)
+#names(df) <- c('T', 'H')
+df <- spread(count(df,result),result,n)
+names(df) <- c('T', 'H')
+df <- mutate(df, percT = T/(T+H), percH = H/(T+H))
+barplot(c(df$percT, df$percH))
+barchart(c(df$percT, df$percH), horizontal = FALSE)
+
+names(df) <- c('T', 'H')
 histogram(result)
 
 dfresult <- data.frame(result)
