@@ -5,9 +5,10 @@ output:
     df_print: paged
 ---
 
+
 # Introduction
 
-This is to explain some very simple probability & statistics. Most of you already know these things. So this is for absolute beginners.
+This is to explain some very simple probability & statistics. Most of you already know these things. We can use this to revise some *basic probability* concepts.
 
 # Basic probability
 
@@ -27,13 +28,14 @@ $$P(H) = \frac{\text{Number of favourable outcome}}{\text{Number of possible eaq
 Similarly probability of landing TAIL is $\frac{1}{2}$.
 
 Probability is Just a Guide
-Probability does not tell us exactly what will happen, it is just a guide
+Probability does not confirm us exactly what will happen, it is just a guide.
 
 Example: toss a coin 10 times, how many Heads will come up?
 According to the Probability of the coin landing Head is ½ chance, so we can expect 5 Heads.
 But when we actually try it we might get 3 heads, or  4 heads ... or anything really.
 
 Lets simulate this using some R script
+
 
 1. we create the coin & assign 1 & 0 (for HEAD & TAIL)
 
@@ -57,13 +59,52 @@ We can show as a table
 ```{r}
 table(result)
 ```
+Using dplyr & tidyr packages we can arrange the resutls nicely also include the percentage of "T" and "H" occurances.
+
+Lets load the required libraries
+
+```{r message= FALSE}
+
+library(tidyr)
+library(dplyr)
+
+```
+
+Arrange tthe results
+
+
+```{r}
+
+df <- data.frame(result)
+df <- spread(count(df,result),result,n)
+names(df) <- c('T', 'H')
+
+```
+
+Lets see the `df`
+
+```{r}
+df
+```
+
+with above results we can see TAIL `r df$T` times and HEAD `r df$H` times.
+
+Using mutate in dplyr package we can add additional columns to show percentage of each "T" & "H"
+
+```{r}
+
+df <- mutate(df, percT = T/(T+H), percH = H/(T+H))
+df
+
+```
+
+
 
 
 Bar chart of this results
 
 ```{r}
-library(lattice)
-barchart(table(result), horizontal = FALSE, xlab = c("TAIL", "HEAD"))
+barplot(c(df$percT, df$percH), names.arg = c("TAIL", "HEAD"), ylab = "%", col = c("lightblue","lightpink"))
 
 ```
 
@@ -77,38 +118,51 @@ Probability of TAIL $P(T)$
 
 In here why $P(H) = P(T) = \frac{1}{2}$ can not be observed.
 
-Because we need to increase the number of coin flips to see that.
+> Probability is Just a Guide
+> Probability does not confirm us exactly what will happen
 
-## Flip coin function
 
-To demonstrate that we can create **flipCoin** function
+## toss Coin function
+
+To demonstrate that we can create **tossCoin** function & **plotCoin** function to plot the results nicely.
+
 ```{r}
-flipCoin <- function(numFlips = 10){
+tossCoin <- function(numToss = 10){
   coin <- c(1,0)
-  sample(coin, numFlips, replace = TRUE)
+  result <- sample(coin, numToss, replace = TRUE)
+  df <- data.frame(result)
+  df <- spread(count(df,result),result,n)
+  names(df) <- c('T', 'H')
+  df <- mutate(df, percT = T/(T+H), percH = H/(T+H))
+  return(df)
 
 }
 
+plotCoin <- function(df){
+  barplot(c(df$percT, df$percH), names.arg = c("TAIL", "HEAD"), ylab = "%", col = c("lightblue","lightpink"), ylim = c(0,1))
+  
+}
 
 ```
 
-Lets see the results by fliping coin 100 times
+
+Lets see the results by tossing coin 100 times
 
 ```{r}
-barchart(table(flipCoin(100)), horizontal = FALSE, xlab = c("TAIL", "HEAD"))
+df100 <- tossCoin(100)
+df100
+plotCoin(df100)
+
 ```
 
 May be 1000 times
 
 
 ```{r}
-barchart(table(flipCoin(1000)), horizontal = FALSE, xlab = c("TAIL", "HEAD"))
+df1000 <- tossCoin(1000)
+df1000
+plotCoin(df1000)
+
+
 ```
 
-## Probability Density Function
-
-The Probability Density Function is
-
-```{r}
-densityplot(result)
-```
