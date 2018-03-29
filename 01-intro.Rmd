@@ -37,10 +37,10 @@ But when we actually try it we might get 3 heads, or  4 heads ... or anything re
 Lets simulate this using some R script
 
 
-1. we create the coin & assign 1 & 0 (for HEAD & TAIL)
+1. we create the coin & assign "H" & "T" (for HEAD & TAIL)
 
-```{r}
-coin <- c(1,0)
+```{r coin}
+coin <- c("H","T")
 
 ```
 2. toss the coin 10 times and store the results in **result**
@@ -59,43 +59,47 @@ We can show as a table
 ```{r}
 table(result)
 ```
-Using dplyr & tidyr packages we can arrange the resutls nicely also include the percentage of "T" and "H" occurances.
+Using dplyr & tidyr packages we can arrange the resutls nicely to show table & also include the measured probability of "T" and "H" occurances.
 
 Lets load the required libraries
 
-```{r message= FALSE}
+```{r message= FALSE, warning=FALSE}
 
 library(tidyr)
 library(dplyr)
+library(ggplot2)
+library(gridExtra)
 
 ```
 
-Arrange tthe results
+Arrange the results
 
 
 ```{r}
 
-df <- data.frame(result)
-df <- spread(count(df,result),result,n)
-names(df) <- c('T', 'H')
+df_total <- data.frame(result) %>% count(result)
 
 ```
 
-Lets see the `df`
-
+Lets see the `df_total`
 ```{r}
-df
+df_total
+
 ```
 
-with above results we can see TAIL `r df$T` times and HEAD `r df$H` times.
 
-Using mutate in dplyr package we can add additional columns to show percentage of each "T" & "H"
+
+
+with above results we can see TAIL `r df_total$T` times and HEAD `r df_total$H` times.
+
+Using `spread` & `gather` in tidyr and `mutate` &  `select` in dplyr package we can add additional columns to show percentage of each "T" & "H"
 
 ```{r}
 
-df <- mutate(df, percT = T/(T+H), percH = H/(T+H))
-df
-
+df_prob <- spread(df_total,result,n) %>% 
+  mutate(prob_H = H/(H+T) , prob_T = T/(H+T) ) %>% 
+  select(prob_H, prob_T) %>% gather(desc,prob,prob_H:prob_T)
+df_prob
 ```
 
 
@@ -104,7 +108,8 @@ df
 Bar chart of this results
 
 ```{r}
-barplot(c(df$percT, df$percH), names.arg = c("TAIL", "HEAD"), ylab = "%", col = c("lightblue","lightpink"))
+ggplot(df_total, aes(result,n, fill = result)) + geom_bar(stat = "identity") + labs(title = "Tossing a coin 10 times") +theme(legend.position = "none")
+ggplot(df_prob, aes(desc,prob, fill = desc)) + geom_bar(stat = "identity") + labs(title = "Measured probability of Tossing a coin 10 times", x = "") + theme(legend.position = "none")
 
 ```
 
@@ -128,18 +133,24 @@ To demonstrate that we can create **tossCoin** function & **plotCoin** function 
 
 ```{r}
 tossCoin <- function(numToss = 10){
-  coin <- c(1,0)
-  result <- sample(coin, numToss, replace = TRUE)
-  df <- data.frame(result)
-  df <- spread(count(df,result),result,n)
-  names(df) <- c('T', 'H')
-  df <- mutate(df, percT = T/(T+H), percH = H/(T+H))
-  return(df)
+  coin <- c("H","T")
+  result <- sample(coin,numToss, replace = TRUE)
+  df_total <- data.frame(result) %>% count(result)
+  
 
 }
 
 plotCoin <- function(df){
-  barplot(c(df$percT, df$percH), names.arg = c("TAIL", "HEAD"), ylab = "%", col = c("lightblue","lightpink"), ylim = c(0,1))
+  number <- sum(df$n)
+  
+  df_prob <- spread(df,result,n) %>% 
+  mutate(prob_H = H/(H+T) , prob_T = T/(H+T) ) %>% 
+  select(prob_H, prob_T) %>% gather(desc,prob,prob_H:prob_T)
+  
+  plot1 <- ggplot(df, aes(result,n, fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Tossing a coin ", number," times")) +theme(legend.position = "none")
+  plot2 <- ggplot(df_prob, aes(desc,prob, fill = desc)) + geom_bar(stat = "identity") + labs(title = paste0("Measured probability of Tossing a coin ", number," times"), x = "") + theme(legend.position = "none")
+  
+  grid.arrange(plot1, plot2)
   
 }
 
