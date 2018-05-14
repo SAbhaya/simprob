@@ -1,0 +1,76 @@
+---
+title: "Simple Probability"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+
+Lets load the required libraries
+
+```{r message= FALSE, warning=FALSE}
+
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(gridExtra)
+
+```
+
+
+## Can you think of similar procedure for toss a Dice.
+
+In here instead of two outcomes we have 6 outcomes.
+
+
+
+## toss Dice function
+
+To demonstrate that we can create **tossDice** function & **plotDice** function similar to toss Coin.
+
+```{r message= FALSE, warning=FALSE}
+tossDice <- function(numToss = 10){
+  dice <- c(1:6)
+  result <- sample(dice,numToss, replace = TRUE)
+  df_total <- data.frame(result) %>% count(result)
+  
+
+}
+
+plotDice <- function(df){
+  number <- sum(df$n)
+  
+  df_prob <- spread(df,result,n) %>% 
+  mutate(prob_H = H/(H+T) , prob_T = T/(H+T) ) %>% 
+  select(prob_H, prob_T) %>% gather(desc,prob,prob_H:prob_T)
+  
+  plot1 <- ggplot(df, aes(result,n, fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Tossing a coin ", number," times")) +theme(legend.position = "none")
+  plot2 <- ggplot(df_prob, aes(desc,prob, fill = desc)) + geom_bar(stat = "identity") + labs(title = paste0("Measured probability of Tossing a coin ", number," times"), x = "") + theme(legend.position = "none")
+  
+  grid.arrange(plot1, plot2)
+  
+}
+
+```
+
+
+Lets see the results by tossing coin 100 times
+
+```{r message= FALSE, warning=FALSE}
+df100 <- tossCoin(100)
+df100
+plotCoin(df100)
+
+```
+
+May be 1000 times
+
+
+```{r message= FALSE, warning=FALSE}
+df1000 <- tossCoin(1000)
+df1000
+plotCoin(df1000)
+
+
+```
