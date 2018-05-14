@@ -74,3 +74,16 @@ plotCoin(df1000)
 
 
 ```
+
+Things to try
+
+```{r}
+
+barplot(table(result))
+histogram(result, n= 6, col = "lightblue")
+
+```
+
+
+
+
