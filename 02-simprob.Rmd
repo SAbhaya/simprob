@@ -41,15 +41,13 @@ tossDice <- function(numToss = 10){
 plotDice <- function(df){
   number <- sum(df$n)
   
-  df_prob <- spread(df,result,n) %>% 
-  mutate(prob_H = H/(H+T) , prob_T = T/(H+T) ) %>% 
-  select(prob_H, prob_T) %>% gather(desc,prob,prob_H:prob_T)
-  
-  plot1 <- ggplot(df, aes(result,n, fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Tossing a coin ", number," times")) +theme(legend.position = "none")
-  plot2 <- ggplot(df_prob, aes(desc,prob, fill = desc)) + geom_bar(stat = "identity") + labs(title = paste0("Measured probability of Tossing a coin ", number," times"), x = "") + theme(legend.position = "none")
+ 
+  plot1 <- ggplot(df, aes(result,n, fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Tossing a dice ", number," times")) +theme(legend.position = "none")
+
+
+  plot2 <- ggplot(df, aes(result, prop.table(df$n), fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Measured probability of Tossing a dice ", number," times"), y = "Probability") + theme(legend.position = "none")
   
   grid.arrange(plot1, plot2)
-  
 }
 
 ```
@@ -58,9 +56,9 @@ plotDice <- function(df){
 Lets see the results by tossing coin 100 times
 
 ```{r message= FALSE, warning=FALSE}
-df100 <- tossCoin(100)
+df100 <- tossDice(100)
 df100
-plotCoin(df100)
+plotDice(df100)
 
 ```
 
@@ -68,22 +66,9 @@ May be 1000 times
 
 
 ```{r message= FALSE, warning=FALSE}
-df1000 <- tossCoin(1000)
+df1000 <- tossDice(1000)
 df1000
-plotCoin(df1000)
+plotDice(df1000)
 
 
 ```
-
-Things to try
-
-```{r}
-
-barplot(table(result))
-histogram(result, n= 6, col = "lightblue")
-
-```
-
-
-
-

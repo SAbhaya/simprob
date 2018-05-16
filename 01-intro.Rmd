@@ -8,7 +8,7 @@ output:
 
 # Introduction
 
-This is to explain some very simple probability & statistics. Most of you already know these things. We can use this to revise some *basic probability* concepts.
+This is to explain some very simple probability &  using R scripts to demonstrate the probability concept. Most of you already know these things. We can use this to revise some *basic probability* concepts.
 
 # Basic probability
 
@@ -58,17 +58,15 @@ We can show as a table
 
 ```{r}
 table(result)
-```
-Using dplyr & tidyr packages we can arrange the resutls nicely to show table & also include the measured probability of "T" and "H" occurances.
 
-Lets load the required libraries
+```
+Using *dplyr* package we can count the resutls & also `prop.table()` to include the measured probability of "T" and "H" occurances.
+
+Lets load the *dplyr*
 
 ```{r message= FALSE, warning=FALSE}
 
-library(tidyr)
 library(dplyr)
-library(ggplot2)
-library(gridExtra)
 
 ```
 
@@ -88,28 +86,31 @@ df_total
 ```
 
 
-
-
 with above results we can see TAIL `r df_total$T` times and HEAD `r df_total$H` times.
 
-Using `spread` & `gather` in tidyr and `mutate` &  `select` in dplyr package we can add additional columns to show percentage of each "T" & "H"
+Using `prop.table()` we can add additional columns to show probability of each "T" & "H"
 
 ```{r}
-
-df_prob <- spread(df_total,result,n) %>% 
-  mutate(prob_H = H/(H+T) , prob_T = T/(H+T) ) %>% 
-  select(prob_H, prob_T) %>% gather(desc,prob,prob_H:prob_T)
+df_prob <- cbind(df_total, prop.table(df_total$n))
+names(df_prob) <- c("result","n", "probability")
 df_prob
 ```
 
 
+To show the results graphically we can generate bar plot using *ggplot* and arrange using `grid.arrange()` function in *gridExtra* package. 
+
+Lets load the *ggplot2*
+```{r message= FALSE, warning=FALSE}
+library(ggplot2)
+
+```
 
 
 Bar chart of this results
 
 ```{r}
 ggplot(df_total, aes(result,n, fill = result)) + geom_bar(stat = "identity") + labs(title = "Tossing a coin 10 times") +theme(legend.position = "none")
-ggplot(df_prob, aes(desc,prob, fill = desc)) + geom_bar(stat = "identity") + labs(title = "Measured probability of Tossing a coin 10 times", x = "") + theme(legend.position = "none")
+ggplot(df_prob, aes(result,probability, fill = result)) + geom_bar(stat = "identity") + labs(title = "Measured probability of Tossing a coin 10 times", y = "probability") + theme(legend.position = "none")
 
 ```
 
@@ -131,6 +132,14 @@ In here why $P(H) = P(T) = \frac{1}{2}$ can not be observed.
 
 To demonstrate that we can create **tossCoin** function & **plotCoin** function to plot the results nicely.
 
+To arrange the two plots `gridExtra` package can be used.
+
+```{r message= FALSE, warning=FALSE}
+library(gridExtra)
+```
+
+Lets write the two functions.
+
 ```{r}
 tossCoin <- function(numToss = 10){
   coin <- c("H","T")
@@ -143,12 +152,9 @@ tossCoin <- function(numToss = 10){
 plotCoin <- function(df){
   number <- sum(df$n)
   
-  df_prob <- spread(df,result,n) %>% 
-  mutate(prob_H = H/(H+T) , prob_T = T/(H+T) ) %>% 
-  select(prob_H, prob_T) %>% gather(desc,prob,prob_H:prob_T)
   
   plot1 <- ggplot(df, aes(result,n, fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Tossing a coin ", number," times")) +theme(legend.position = "none")
-  plot2 <- ggplot(df_prob, aes(desc,prob, fill = desc)) + geom_bar(stat = "identity") + labs(title = paste0("Measured probability of Tossing a coin ", number," times"), x = "") + theme(legend.position = "none")
+  plot2 <- ggplot(df, aes(result, prop.table(df$n), fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Measured probability of Tossing a coin ", number," times"), y = "Probability") + theme(legend.position = "none")
   
   grid.arrange(plot1, plot2)
   
