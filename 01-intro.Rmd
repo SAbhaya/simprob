@@ -5,28 +5,45 @@ output:
     df_print: paged
 ---
 
+
 # Introduction
 
-This is to explain some very simple probability & statistics. Most of you already know these things. So this is for absolute beginners.
+This is to explain some very simple probability &  using R scripts to demonstrate the probability concept. Most of you already know these things. We can use this to revise some *basic probability* concepts.
 
 # Basic probability
 
-Lets assume simple coin. It has a two faces and if you flip the coin it will give  result either **HEAD** or **TAIL**
+The probababilty of perticuar event can be described as:
 
-Given that all outcomes are equally likely, we can compute the probability of a TAIL using the formula:
-</br>
 $$ \text{Probabillity} = \frac{\text{Number of favourable outcome}}{\text{Number of possible eaqually like outcomes}} $$
-</br>
-So probability of result HEAD is 0.5 or 1/2 and probability of result TAIL is 0.5 or 1/2
-Lets assume we flip the coin 10 times. We can use R to simulate the results.
 
-1. we create the coin & assign 0 & 1 (for HEAD & TAIL)
+Lets assume simple coin. It has a two faces and if you toss the coin it will give result either **HEAD** or **TAIL**
 
-```{r}
-coin <- c(0,1)
+The probability of the coin landing H or HEAD is $P(H)$
+And the probability of the coin landing T or TAIL is $P(T)$
+
+Given that all outcomes are equally likely, we can compute the probability of a landing HEAD using the formula:
+
+$$P(H) = \frac{\text{Number of favourable outcome}}{\text{Number of possible eaqually like outcomes}} = \frac{1}{2} $$
+
+Similarly probability of landing TAIL is $\frac{1}{2}$.
+
+Probability is Just a Guide
+Probability does not confirm us exactly what will happen, it is just a guide.
+
+Example: toss a coin 10 times, how many Heads will come up?
+According to the Probability of the coin landing Head is ½ chance, so we can expect 5 Heads.
+But when we actually try it we might get 3 heads, or  4 heads ... or anything really.
+
+Lets simulate this using some R script
+
+
+1. we create the coin & assign "H" & "T" (for HEAD & TAIL)
+
+```{r coin}
+coin <- c("H","T")
 
 ```
-2. flip the coin 10 times and store the results in **result**
+2. toss the coin 10 times and store the results in **result**
 
 ```{r}
 result <- sample(coin,10, replace = TRUE)
@@ -41,21 +58,128 @@ We can show as a table
 
 ```{r}
 table(result)
+
+```
+Using *dplyr* package we can count the resutls & also `prop.table()` to include the measured probability of "T" and "H" occurances.
+
+Lets load the *dplyr*
+
+```{r message= FALSE, warning=FALSE}
+
+library(dplyr)
+
+```
+
+Arrange the results
+
+
+```{r}
+
+df_total <- data.frame(result) %>% count(result)
+
+```
+
+Lets see the `df_total`
+```{r}
+df_total
+
+```
+
+
+with above results we can see TAIL `r df_total$T` times and HEAD `r df_total$H` times.
+
+Using `prop.table()` we can add additional columns to show probability of each "T" & "H"
+
+```{r}
+df_prob <- cbind(df_total, prop.table(df_total$n))
+names(df_prob) <- c("result","n", "probability")
+df_prob
+```
+
+
+To show the results graphically we can generate bar plot using *ggplot* and arrange using `grid.arrange()` function in *gridExtra* package. 
+
+Lets load the *ggplot2*
+```{r message= FALSE, warning=FALSE}
+library(ggplot2)
+
 ```
 
 
 Bar chart of this results
 
 ```{r}
-library(lattice)
-barchart(table(result), horizontal = FALSE)
+ggplot(df_total, aes(result,n, fill = result)) + geom_bar(stat = "identity") + labs(title = "Tossing a coin 10 times") +theme(legend.position = "none")
+ggplot(df_prob, aes(result,probability, fill = result)) + geom_bar(stat = "identity") + labs(title = "Measured probability of Tossing a coin 10 times", y = "probability") + theme(legend.position = "none")
 
 ```
 
-## Probability Density Function
+**What is the conclusion?**
 
-The Probability Density Function is
+> seems number of HEAD or TAIL frequencies are not equal?
+
+Probability of HEAD $P(H)$
+
+Probability of TAIL $P(T)$
+
+In here why $P(H) = P(T) = \frac{1}{2}$ can not be observed.
+
+> Probability is Just a Guide
+> Probability does not confirm us exactly what will happen
+
+
+## toss Coin function
+
+To demonstrate that we can create **tossCoin** function & **plotCoin** function to plot the results nicely.
+
+To arrange the two plots `gridExtra` package can be used.
+
+```{r message= FALSE, warning=FALSE}
+library(gridExtra)
+```
+
+Lets write the two functions.
 
 ```{r}
-densityplot(result)
+tossCoin <- function(numToss = 10){
+  coin <- c("H","T")
+  result <- sample(coin,numToss, replace = TRUE)
+  df_total <- data.frame(result) %>% count(result)
+  
+
+}
+
+plotCoin <- function(df){
+  number <- sum(df$n)
+  
+  
+  plot1 <- ggplot(df, aes(result,n, fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Tossing a coin ", number," times")) +theme(legend.position = "none")
+  plot2 <- ggplot(df, aes(result, prop.table(df$n), fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Measured probability of Tossing a coin ", number," times"), y = "Probability") + theme(legend.position = "none")
+  
+  grid.arrange(plot1, plot2)
+  
+}
+
 ```
+
+
+Lets see the results by tossing coin 100 times
+
+```{r}
+df100 <- tossCoin(100)
+df100
+plotCoin(df100)
+
+```
+
+May be 1000 times
+
+
+```{r}
+df1000 <- tossCoin(1000)
+df1000
+plotCoin(df1000)
+
+
+```
+
