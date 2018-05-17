@@ -7,12 +7,10 @@ output:
 
 
 
-Lets load the required libraries
+Lets load the required libraries to plot the graphs nicely
 
 ```{r message= FALSE, warning=FALSE}
 
-library(tidyr)
-library(dplyr)
 library(ggplot2)
 library(gridExtra)
 
@@ -33,19 +31,18 @@ To demonstrate that we can create **tossDice** function & **plotDice** function 
 tossDice <- function(numToss = 10){
   dice <- c(1:6)
   result <- sample(dice,numToss, replace = TRUE)
-  df_total <- data.frame(result) %>% count(result)
+  df_total <- data.frame(table(result))
   
-
 }
 
 plotDice <- function(df){
-  number <- sum(df$n)
+  number <- sum(df$Freq)
   
  
-  plot1 <- ggplot(df, aes(result,n, fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Tossing a dice ", number," times")) +theme(legend.position = "none")
+  plot1 <- ggplot(df, aes(result,Freq, fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Tossing a dice ", number," times")) +theme(legend.position = "none")
 
 
-  plot2 <- ggplot(df, aes(result, prop.table(df$n), fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Measured probability of Tossing a dice ", number," times"), y = "Probability") + theme(legend.position = "none")
+  plot2 <- ggplot(df, aes(result, prop.table(df$Freq), fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Measured probability of Tossing a dice ", number," times"), y = "Probability") + theme(legend.position = "none")
   
   grid.arrange(plot1, plot2)
 }
