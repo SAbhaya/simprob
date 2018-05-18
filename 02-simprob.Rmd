@@ -5,11 +5,15 @@ output:
     df_print: paged
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message= FALSE, warning=FALSE)
+```
+
 
 
 Lets load the required libraries to plot the graphs nicely
 
-```{r message= FALSE, warning=FALSE}
+```{r}
 
 library(ggplot2)
 library(gridExtra)
@@ -27,10 +31,10 @@ In here instead of two outcomes we have 6 outcomes.
 
 To demonstrate that we can create **tossDice** function & **plotDice** function similar to toss Coin.
 
-```{r message= FALSE, warning=FALSE}
+```{r}
 tossDice <- function(numToss = 10){
   dice <- c(1:6)
-  result <- sample(dice,numToss, replace = TRUE)
+  result <- sample(dice, numToss, replace = TRUE)
   df_total <- data.frame(table(result))
   
 }
@@ -42,7 +46,7 @@ plotDice <- function(df){
   plot1 <- ggplot(df, aes(result,Freq, fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Tossing a dice ", number," times")) +theme(legend.position = "none")
 
 
-  plot2 <- ggplot(df, aes(result, prop.table(df$Freq), fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Measured probability of Tossing a dice ", number," times"), y = "Probability") + theme(legend.position = "none")
+  plot2 <- ggplot(df, aes(result, prop.table(df$Freq), fill = result)) + geom_bar(stat = "identity") + labs(title = paste0("Probability of Tossing a dice ", number," times"), y = "Probability") + theme(legend.position = "none")
   
   grid.arrange(plot1, plot2)
 }
@@ -50,19 +54,19 @@ plotDice <- function(df){
 ```
 
 
-Lets see the results by tossing coin 100 times
+Lets see the results by tossing coin 50 times
 
-```{r message= FALSE, warning=FALSE}
-df100 <- tossDice(100)
-df100
-plotDice(df100)
+```{r}
+df50 <- tossDice(50)
+df50
+plotDice(df50)
 
 ```
 
 May be 1000 times
 
 
-```{r message= FALSE, warning=FALSE}
+```{r}
 df1000 <- tossDice(1000)
 df1000
 plotDice(df1000)
