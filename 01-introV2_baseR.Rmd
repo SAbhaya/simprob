@@ -1,5 +1,6 @@
 ---
 title: "Simple Probability"
+author: Sudarshana A
 output:
   html_document:
     df_print: paged
@@ -23,6 +24,7 @@ $$ \text{Probabillity} = \frac{\text{Number of favourable outcome}}{\text{Number
 Lets assume simple coin. It has a two faces and if you toss the coin it will give result either **HEAD** or **TAIL**
 
 The probability of the coin landing H or HEAD is $P(H)$
+
 And the probability of the coin landing T or TAIL is $P(T)$
 
 Given that all outcomes are equally likely, we can compute the probability of a landing HEAD using the formula:
@@ -50,7 +52,7 @@ coin <- c("H","T")
 ```
 2. toss the coin 10 times and store the results in **result**
 
-```{r}
+```{r result}
 result <- sample(coin,10, replace = TRUE)
 
 ```
@@ -129,7 +131,7 @@ library(gridExtra)
 
 Lets write the two functions.
 
-```{r}
+```{r funcCoin}
 tossCoin <- function(numToss = 10){
   coin <- c("H","T")
   result <- sample(coin,numToss, replace = TRUE)
@@ -154,7 +156,7 @@ plotCoin <- function(df){
 
 Lets see the results by tossing coin 50 times
 
-```{r}
+```{r 50Coin}
 df50 <- tossCoin(50)
 df50
 plotCoin(df50)
@@ -164,7 +166,7 @@ plotCoin(df50)
 May be 1000 times
 
 
-```{r}
+```{r 1000Coin}
 df1000 <- tossCoin(1000)
 df1000
 plotCoin(df1000)
@@ -177,7 +179,7 @@ plotCoin(df1000)
 
 Lets try some big number...
 
-```{r}
+```{r millionCoin}
 df1million <- tossCoin(1000000)
 df1million
 plotCoin(df1million)
@@ -195,7 +197,7 @@ In here instead of two outcomes we have 6 outcomes.
 
 To demonstrate that we can create **tossDice** function & **plotDice** function similar to toss Coin.
 
-```{r}
+```{r funcDice}
 tossDice <- function(numToss = 10){
   dice <- c(1:6)
   result <- sample(dice, numToss, replace = TRUE)
@@ -221,7 +223,7 @@ plotDice <- function(df){
 
 Lets see the results by tossing coin 50 times
 
-```{r}
+```{r 50Dice}
 df50 <- tossDice(50)
 df50
 plotDice(df50)
@@ -231,7 +233,7 @@ plotDice(df50)
 May be 1000 times
 
 
-```{r}
+```{r 1000Dice}
 df1000 <- tossDice(1000)
 df1000
 plotDice(df1000)
@@ -242,10 +244,18 @@ plotDice(df1000)
 Dice can be tossed 1 million times
 
 
-```{r}
+```{r millionDice}
 df1million <- tossDice(1000000)
 df1million
 plotDice(df1million)
+
+```
+
+as a proportional table
+
+```{r}
+cbind(df1million, prop.table(df1million$Freq))
+
 
 ```
 
